@@ -1,0 +1,29 @@
+<!-- socket.io.js is added by socketio server -->
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+  // socket.io.js is going to add the io object to the global scope
+  console.log("io", io);
+
+  const socket = io("http://localhost:5000");
+
+  socket.on("connect", () => {
+    console.log("connected", socket.id);
+
+    // Not Good Practice
+    // socket.on("messageFromServer", (data) => {
+    //   console.log("messageFromServer", data);
+    // });
+
+    socket.emit("messageFromClient", { data: "Hello from Client" });
+  });
+
+  socket.on("messageFromServer", (data) => {
+    console.log("messageFromServer", data);
+  });
+
+  // Tells no. of times socket tried to reconnenct
+  socket.io.on("reconnect", (data) => {
+    console.log("reconnected", data);
+  });
+</script>
